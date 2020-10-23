@@ -1,0 +1,14 @@
+{
+  "name": "theory-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Praxis <hello@vulpinecat.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.20.0",
+    "dotenv": "^8.2.0",
+    "node-cron": "^2.0.3",
+    "telegraf": "^3.38.0"
+  }
+}
