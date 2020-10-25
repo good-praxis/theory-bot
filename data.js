@@ -4,7 +4,7 @@ export default {
       url: 'http://autismus-berlin.de/angebote/erwachsenenberatung/',
       title: 'Autismus Deutschland',
       target:
-        'Leider  das Beratungsangebot der Erwachsenenberatungsstelle derzeit nicht.',
+        'Leider besteht das Beratungsangebot der Erwachsenenberatungsstelle derzeit nicht.',
       targetNotFoundMessage:
         'Die Erwachsenenberatungsstelle von Autismus Deutschland ist vielleicht wieder verfügbar!',
     },
