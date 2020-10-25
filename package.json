@@ -6,6 +6,9 @@
   "license": "MIT",
   "private": true,
   "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "axios": "^0.20.0",
     "dotenv": "^8.2.0",
