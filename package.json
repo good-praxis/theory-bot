@@ -5,6 +5,7 @@
   "author": "Praxis <hello@vulpinecat.com>",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "dependencies": {
     "axios": "^0.20.0",
     "dotenv": "^8.2.0",
