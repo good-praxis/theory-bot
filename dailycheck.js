@@ -16,7 +16,7 @@ const Website = {
       .then((response) => {
         if (response.status != 200) return true // Preventing exception, acting like target was found
 
-        return response.data.search(this.target) == -1
+        return response.data.search(this.target) != -1
       })
       .catch(true) // Preventing exception, acting like target was found
   },
@@ -28,7 +28,9 @@ const websites = data.dailyChecks.map((website) => {
 
 export async function performCheck(bot) {
   for (let website of websites) {
-    if (await !website.urlIncludesTarget())
-      bot.reply(website.targetNotFoundMessage)
+    const foundTarget = await website.urlIncludesTarget()
+    if (!foundTarget) {
+      await bot.reply(`${website.targetNotFoundMessage}\n${website.url}`)
+    }
   }
 }
