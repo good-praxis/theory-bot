@@ -25,7 +25,6 @@ bot.command('check', async (ctx) => {
   await performCheck(ctx)
 })
 bot.command('subscribe', (ctx) => {
-  console.log(subscribers)
   if (subscribers.indexOf(ctx.chat.id) != -1)
     return ctx.reply('Already subscribed')
 
