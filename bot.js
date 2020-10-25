@@ -14,14 +14,14 @@ bot.use(async (ctx, next) => {
   const start = new Date()
   await next()
   const ms = new Date() - start
-  ctx.reply(`Action took ${ms}ms`)
+  await ctx.reply(`Action took ${ms}ms`)
 })
 bot.command('timed', (ctx) => {
   timed = !timed
   ctx.reply(timed ? 'Activated timing' : 'Deactivated timing')
 })
 bot.command('check', async (ctx) => {
-  performCheck(ctx)
+  await performCheck(ctx)
 })
 bot.help((ctx) => ctx.reply('Send me a sticker'))
 bot.on('sticker', (ctx) => ctx.reply('👍'))
