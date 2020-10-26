@@ -28,7 +28,7 @@ bot.command('subscribe', (ctx) => {
   if (subscribers.indexOf(ctx.chat.id) != -1)
     return ctx.reply('Already subscribed')
 
-  cron.schedule('* 10 * * *', async () => {
+  cron.schedule('0 10 * * *', async () => {
     await performCheck(ctx)
     ctx.reply('performed daily cron')
   })
