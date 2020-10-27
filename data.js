@@ -1,4 +1,5 @@
 export default {
+  whitelist: [154667190],
   dailyChecks: [
     {
       url: 'http://autismus-berlin.de/angebote/erwachsenenberatung/',

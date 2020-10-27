@@ -4,12 +4,18 @@ dotenv.config()
 import cron from 'node-cron'
 import Telegraf from 'telegraf'
 import { performCheck } from './dailycheck.js'
+import { isUserOnWhitelist } from './whitelist.js'
 
 export const bot = new Telegraf(process.env.BOT_TOKEN)
 
 let timed = false
 const subscribers = []
 
+bot.use(async (ctx, next) => {
+  if (isUserOnWhitelist(ctx)) {
+    await next()
+  }
+})
 bot.use(async (ctx, next) => {
   if (!timed) return await next()
   const start = new Date()
