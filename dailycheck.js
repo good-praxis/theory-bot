@@ -1,5 +1,7 @@
 import axios from 'axios'
-import data from './data.js'
+import { getData } from './jsonHandler.js'
+
+const data = getData()
 
 const Website = {
   init: function ({ url, title, target, targetNotFoundMessage }) {
