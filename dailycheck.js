@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getData } from './jsonHandler.js'
 
-const data = getData()
+const dailyChecksData = getData().dailyChecks
 
 const Website = {
   init: function ({ url, title, target, targetNotFoundMessage }) {
@@ -24,11 +24,13 @@ const Website = {
   },
 }
 
-const websites = data.dailyChecks.map((website) => {
-  return Object.create(Website).init(website)
-})
-
 export async function performCheck(bot) {
+  const userIdString = bot.chat.id.toString()
+  if (!(userIdString in dailyChecksData)) return // If no dailyChecks data exist, we are done
+
+  const websites = dailyChecksData[userIdString].map((website) => {
+    return Object.create(Website).init(website)
+  })
   for (let website of websites) {
     const foundTarget = await website.urlIncludesTarget()
     if (!foundTarget) {
