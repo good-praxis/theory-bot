@@ -10,7 +10,7 @@ import { getSubscribers, updateSubscribers } from './jsonHandler.js'
 import { isUserOnWhitelist } from './whitelist.js'
 
 export const bot = new Telegraf(process.env.BOT_TOKEN)
-const telegram = new Telegram(process.env.BOT_TOKEN)
+export const telegram = new Telegram(process.env.BOT_TOKEN)
 
 let verbose = false
 
