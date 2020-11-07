@@ -24,16 +24,18 @@ const Website = {
   },
 }
 
-export async function performCheck(id, telegram) {
+export async function performCheck(id, telegram, verbose) {
   if (!(id.toString() in dailyChecksData)) return // If no dailyChecks data exist, we are done
 
   const websites = dailyChecksData[id.toString()].map((website) => {
     return Object.create(Website).init(website)
   })
   for (let website of websites) {
+    if (verbose) await telegram.sendMessage(id, `Checking ${website.title}...`)
     const foundTarget = await website.urlIncludesTarget()
     if (!foundTarget) {
       await telegram.sendMessage(id, `${website.targetNotFoundMessage}\n${website.url}`)
     }
   }
+  if (verbose) await telegram.sendMessage(id, 'Ran all checks')
 }
