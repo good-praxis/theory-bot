@@ -24,17 +24,16 @@ const Website = {
   },
 }
 
-export async function performCheck(bot) {
-  const userIdString = bot.chat.id.toString()
-  if (!(userIdString in dailyChecksData)) return // If no dailyChecks data exist, we are done
+export async function performCheck(id, telegram) {
+  if (!(id.toString() in dailyChecksData)) return // If no dailyChecks data exist, we are done
 
-  const websites = dailyChecksData[userIdString].map((website) => {
+  const websites = dailyChecksData[id.toString()].map((website) => {
     return Object.create(Website).init(website)
   })
   for (let website of websites) {
     const foundTarget = await website.urlIncludesTarget()
     if (!foundTarget) {
-      await bot.reply(`${website.targetNotFoundMessage}\n${website.url}`)
+      await telegram.sendMessage(id, `${website.targetNotFoundMessage}\n${website.url}`)
     }
   }
 }
