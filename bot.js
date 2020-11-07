@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
+import R from 'ramda'
 import cron from 'node-cron'
 import Telegraf from 'telegraf'
 import Telegram from 'telegraf/telegram.js'
@@ -26,7 +27,7 @@ bot.use(async (ctx, next) => {
   await ctx.reply(`Action took ${ms}ms`)
 })
 bot.use(async (ctx, next) => {
-  if(!isVerbose(getMessageText(ctx))) return await next()
+  if (!isVerbose(getMessageText(ctx))) return await next()
   verbose = true
   await next()
   verbose = false
@@ -35,9 +36,8 @@ bot.command('check', async (ctx) => {
   await performCheck(ctx.chat.id, telegram, verbose)
 })
 bot.command('subscribe', (ctx) => {
-  if (isSubscribed(ctx.chat.id))
-    return ctx.reply('Already subscribed')
-  
+  if (isSubscribed(ctx.chat.id)) return ctx.reply('Already subscribed')
+
   if (verbose) ctx.reply("Can't subscribe verbosely")
 
   cron.schedule('0 10 * * *', async () => {
@@ -47,24 +47,14 @@ bot.command('subscribe', (ctx) => {
   updateSubscribers(ctx.chat.id)
   ctx.reply('You have been subscribed to the daily check')
 })
-bot.hears(/^ID/gmi, (ctx) => ctx.reply(`${ctx.chat.id}`))
+bot.hears(/^ID/gim, (ctx) => ctx.reply(`${ctx.chat.id}`))
 
 function getMessageText(ctx) {
   return ctx.message?.text ? ctx.message.text : ''
 }
 
-const isTimed = contains('-t')
-const isVerbose = contains('-v')
-const isSubscribed = reverse_contains(getSubscribers())
-
-function contains(target) {
-  return function containsTarget(container) {
-    return container.indexOf(target) != -1
-  }
-}
-
-function reverse_contains(container) {
-  return function inner_contains(target) {
-    return contains(target)(container)
-  }
+const isTimed = R.curryN(2, R.includes)('-t')
+const isVerbose = R.curryN(2, R.includes)('-v')
+function isSubscribed(id) {
+  return R.includes(id, getSubscribers())
 }
