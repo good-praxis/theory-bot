@@ -42,7 +42,7 @@ bot.command('subscribe', (ctx) => {
   subscribers.push(ctx.chat.id)
   ctx.reply('You have been subscribed to the daily check')
 })
-bot.hears('ID', (ctx) => ctx.reply(`${ctx.chat.id}`))
+bot.hears(/^ID/gmi, (ctx) => ctx.reply(`${ctx.chat.id}`))
 
 function getMessageText(ctx) {
   return ctx.message?.text ? ctx.message.text : ''
