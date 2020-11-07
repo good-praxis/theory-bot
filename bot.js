@@ -10,6 +10,7 @@ import { isUserOnWhitelist } from './whitelist.js'
 export const bot = new Telegraf(process.env.BOT_TOKEN)
 const telegram = new Telegram(process.env.BOT_TOKEN)
 
+let verbose = false
 const subscribers = []
 
 bot.use(async (ctx, next) => {
@@ -24,9 +25,11 @@ bot.use(async (ctx, next) => {
   const ms = new Date() - start
   await ctx.reply(`Action took ${ms}ms`)
 })
-bot.command('timed', (ctx) => {
-  timed = !timed
-  ctx.reply(timed ? 'Activated timing' : 'Deactivated timing')
+bot.use(async (ctx, next) => {
+  if(!isVerbose(getMessageText(ctx))) return await next()
+  verbose = true
+  await next()
+  verbose = false
 })
 bot.command('check', async (ctx) => {
   await performCheck(ctx.chat.id, telegram)
@@ -48,6 +51,11 @@ function getMessageText(ctx) {
   return ctx.message?.text ? ctx.message.text : ''
 }
 
-function isTimed(message) {
-  return message.indexOf('-t') != -1
+const isTimed = contains('-t')
+const isVerbose = contains('-v')
+
+function contains(target) {
+  return function containsTarget(message) {
+    return message.indexOf(target) != -1
+  }
 }
