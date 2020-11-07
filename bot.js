@@ -10,7 +10,6 @@ import { isUserOnWhitelist } from './whitelist.js'
 export const bot = new Telegraf(process.env.BOT_TOKEN)
 const telegram = new Telegram(process.env.BOT_TOKEN)
 
-let timed = false
 const subscribers = []
 
 bot.use(async (ctx, next) => {
@@ -19,7 +18,7 @@ bot.use(async (ctx, next) => {
   }
 })
 bot.use(async (ctx, next) => {
-  if (!timed) return await next()
+  if (!isTimed(getMessageText(ctx))) return await next()
   const start = new Date()
   await next()
   const ms = new Date() - start
@@ -44,3 +43,11 @@ bot.command('subscribe', (ctx) => {
   ctx.reply('You have been subscribed to the daily check')
 })
 bot.hears('ID', (ctx) => ctx.reply(`${ctx.chat.id}`))
+
+function getMessageText(ctx) {
+  return ctx.message?.text ? ctx.message.text : ''
+}
+
+function isTimed(message) {
+  return message.indexOf('-t') != -1
+}
