@@ -12,8 +12,6 @@ import { isUserOnWhitelist } from './whitelist.js'
 export const bot = new Telegraf(process.env.BOT_TOKEN)
 export const telegram = new Telegram(process.env.BOT_TOKEN)
 
-let verbose = false
-
 bot.use(async (ctx, next) => {
   if (isUserOnWhitelist(ctx)) {
     await next()
@@ -28,12 +26,12 @@ bot.use(async (ctx, next) => {
 })
 bot.use(async (ctx, next) => {
   if (!isVerbose(getMessageText(ctx))) return await next()
-  verbose = true
+  ctx.state.verbose = true
   await next()
-  verbose = false
+  ctx.state.verbose = false
 })
 bot.command('check', async (ctx) => {
-  await performCheck(ctx.chat.id, telegram, verbose)
+  await performCheck(ctx.chat.id, telegram, ctx.state.verbose)
 })
 bot.command('subscribe', (ctx) => {
   if (isSubscribed(ctx.chat.id)) return ctx.reply('Already subscribed')
