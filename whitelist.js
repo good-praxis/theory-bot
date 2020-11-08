@@ -1,8 +1,6 @@
-import { getData } from './jsonHandler.js'
+import { getWhitelist } from './jsonHandler.js'
+import R from 'ramda'
 
-const data = getData()
-
-export function isUserOnWhitelist(ctx) {
-  const { whitelist } = data
-  return whitelist.includes(ctx.chat.id)
+export function onWhitelist(id) {
+  return R.includes(id, getWhitelist())
 }

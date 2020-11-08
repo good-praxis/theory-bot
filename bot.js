@@ -7,13 +7,13 @@ import Telegraf from 'telegraf'
 import Telegram from 'telegraf/telegram.js'
 import { performCheck } from './dailycheck.js'
 import { getSubscribers, updateSubscribers } from './jsonHandler.js'
-import { isUserOnWhitelist } from './whitelist.js'
+import { onWhitelist } from './whitelist.js'
 
 export const bot = new Telegraf(process.env.BOT_TOKEN)
 export const telegram = new Telegram(process.env.BOT_TOKEN)
 
 bot.use(async (ctx, next) => {
-  if (isUserOnWhitelist(ctx)) {
+  if (onWhitelist(ctx.chat.id)) {
     await next()
   }
 })

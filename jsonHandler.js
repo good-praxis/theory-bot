@@ -33,6 +33,10 @@ export function getSubscribers() {
   return getData().subscribers
 }
 
+export function getWhitelist() {
+  return getData().whitelist
+}
+
 export function initializeData(telegram) {
   for (const subscriber of getSubscribers()) {
     cron.schedule('0 10 * * *', async () => {
