@@ -36,7 +36,7 @@ bot.command('check', async (ctx) => {
 bot.command('subscribe', (ctx) => {
   if (isSubscribed(ctx.chat.id)) return ctx.reply('Already subscribed')
 
-  if (verbose) ctx.reply("Can't subscribe verbosely")
+  if (ctx.state.verbose) ctx.reply("Can't subscribe verbosely")
 
   cron.schedule('0 10 * * *', async () => {
     await performCheck(ctx.chat.id, telegram)

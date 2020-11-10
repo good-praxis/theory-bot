@@ -2,6 +2,7 @@ import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 import fs from 'fs'
 import cron from 'node-cron'
+import { performCheck } from './dailycheck.js'
 
 const schema = require('./schema.json')
 let data = {}
@@ -38,11 +39,11 @@ export function getWhitelist() {
 }
 
 export function initializeData(telegram) {
-  for (const subscriber of getSubscribers()) {
+  getSubscribers().map((subscriber) => {
     cron.schedule('0 10 * * *', async () => {
       await performCheck(subscriber, telegram)
       telegram.sendMessage(subscriber, 'performed daily cron')
     })
     telegram.sendMessage(subscriber, 'resuming subscription after downtime')
-  }
+  })
 }
